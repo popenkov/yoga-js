@@ -332,8 +332,85 @@ window.addEventListener('DOMContentLoaded', function () {
    
     
 
-    
 
+    //СЛАЙДЕР
+
+    //1. Объявляем переменные, которые буду использованы в нашей программе.
+
+    let slideIndex = 1; // номер слайда, который показывается в тек момент.
+    let slides = document.querySelectorAll('.slider-item');
+    let prev = document.querySelector('.prev');
+    let next = document.querySelector('.next');
+    let dotsWrap = document.querySelector('.slider-dots');
+    let dots = document.querySelectorAll('.dot');
+
+    //2. Алгоритм действий
+    // -скрыть все слайды и показывать только первый
+    // Она может принимать аргумент с номером слайда, который надо показать.
+    // также должны изменяться и точки
+    // функция переключения слайдов (изменение слайд индекс) по клику на стрелочки
+    // нужна функция, определяющая текущий слай (чтобы точки менять)
+
+    function showSlides (n) {
+
+        //что делаем, когда выходим за количество слайдов стрелками
+        if (n > slides.length) {
+            slideIndex = 1;
+        } 
+        
+        if (n < 1) {
+            slideIndex = slides.length; 
+        }
+
+
+        //скроем все слайды
+        slides.forEach ( (item) => item.style.display = "none");
+        //удаляем класс активной точки
+        dots.forEach ( (item) => item.classList.remove('dot-active'));
+
+        //показываем указанный слайд
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].classList.add('dot-active');
+    }
+
+    // эта функция будет запускаться по клику на стрелки
+    showSlides(slideIndex);
+
+
+    //функция изменяющая значение slideIndex
+    function plusSlides (n) {
+    showSlides(slideIndex += n);
+    }
+    //функция определяющая текущий слайд
+    // например, когда кликнем по точке, в функцию будет передаваться номер точки
+    function currentSlide (n) {
+        showSlides(slideIndex = n);
+    }
+
+    prev.addEventListener('click', function () {
+        plusSlides (-1);
+    })
+
+    next.addEventListener('click', function () {
+        plusSlides (1);
+    })
+
+    dotsWrap.addEventListener('click', function (evt) {
+       /*  console.log(dots);
+        let index = dots.indexOf(evt.target);
+        console.log(dots);
+        console.log(index);
+        currentSlide (1); */
+
+        for (let i = 0; i < dots.length + 1; i++) {
+            if (evt.target.classList.contains('dot') && dots[i - 1] === evt.target) {
+                currentSlide (i)
+            }
+        }
+    })
+
+
+    
 }   
 );
 
